@@ -20,19 +20,20 @@ const getStudents = async (req, res) => {
 //@route POST /api/students
 //@access public
 const createStudent = (req, res) => {
-    const { name, email, areaOfInterest } = req.body;
-    if (!name || !email || !areaOfInterest) {
+    const { name, rollno, role } = req.body;
+    if (!name || !rollno || !role) {
         res.status(400).json({ error: "All fields are mandatory!" });
         return;
     }
 
-    const query = "INSERT INTO students (name, email, areaOfInterest) VALUES (?, ?, ?)";
-    db.query(query, [name, email, areaOfInterest], (err, result) => {
+    const query = "INSERT INTO students (name, rollno, role) VALUES (?, ?, ?)";
+    db.query(query, [name, rollno, role], (err, result) => {
         if (err) {
             res.status(500).json({ error: "Failed to create student" });
+            console.log(err.stack)
             return;
         }
-        res.status(201).json({ message: "Student created", studentId: result.insertId });
+        res.status(201).json({ message: "Student created" });
     });
 };
 

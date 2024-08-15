@@ -1,4 +1,4 @@
-const db = require("../config/database");
+const {db} = require("../config/database");
 
 //@desc Get all mentors
 //@route GET /api/mentors
@@ -18,19 +18,19 @@ const getMentors = (req, res) => {
 //@route POST /api/mentors
 //@access public
 const createMentor = (req, res) => {
-    const { name, email, areaOfExpertise } = req.body;
-    if (!name || !email || !areaOfExpertise) {
+    const { name, mentorId, role } = req.body;
+    if (!name || !mentorId || !role) {
         res.status(400).json({ error: "All fields are mandatory!" });
         return;
     }
 
-    const query = "INSERT INTO mentors (name, email, areaOfExpertise) VALUES (?, ?, ?)";
-    db.query(query, [name, email, areaOfExpertise], (err, result) => {
+    const query = "INSERT INTO mentors (name, mentorId, role) VALUES (?, ?, ?)";
+    db.query(query, [name, mentorId, role], (err, result) => {
         if (err) {
             res.status(500).json({ error: "Failed to create mentor" });
             return;
         }
-        res.status(201).json({ message: "Mentor created", mentorId: result.insertId });
+        res.status(201).json({ message: "Mentor created"});
     });
 };
 

@@ -1,17 +1,15 @@
 const { db } = require("../config/database");
 
 //@desc Schedule 1x1 session
-//@route POST /api/scheduler
+//@route get /api/scheduler
 //@access public
 const getMentorSession = (req, res) => {
   const { role, duration } = req.query;
   const query = `
     SELECT * FROM mentors As m
     JOIN session_slot AS ss ON m.mentorId = ss.mentorId
-    WHERE m.role = "${role}" ${
-    duration ? `AND duration = ${duration}` : ""
-  };
-    `;
+    WHERE m.role = "${role}" AND ss.duration = ${duration};
+        `;
   db.query(query, (err, results) => {
     if (err) {
       console.log(err);
@@ -23,7 +21,7 @@ const getMentorSession = (req, res) => {
   });
 };
 
-const scheduleSession = async (req, res) => {
+const scheduleSession = (req, res) => {
   const { rollno, mentorId, duration, role, premium, session_slot } = req.body;
 
   // Query to check mentor's availability
@@ -114,8 +112,7 @@ const scheduleSession = async (req, res) => {
     SELECT * FROM mentors AS m
     JOIN session_slot AS ss ON m.mentorId = ss.mentorId
     WHERE ss.is_available = 1 AND m.role = "${role}" AND ss.duration = ${duration} AND ss.session_id = ${session_slot}
-    ORDER BY session_id ASC
-    LIMIT 1;`;
+    `;
     db.query(checkAvailabilityQuery,(err,result)=>{
         // console.log("hello",result)
         if(!result.length){
@@ -124,7 +121,7 @@ const scheduleSession = async (req, res) => {
             });
         }
         const priceQuery = `SELECT * FROM payment_types WHERE type = ${duration};`;
-        db.query(priceQuery, (err, result) => {
+        db.query(priceQuery, (err, priceresult) => {
           if (err) {
             res.status(500).json({ error: "Failed to fetch payment type" });
             return;
@@ -152,7 +149,7 @@ const scheduleSession = async (req, res) => {
             });
     
             // Insert payment record
-            const base_price = result[0].price;
+            const base_price = priceresult[0].price;
           const total_price = base_price + 1000 + (0.18 * base_price); // Adding 18% tax and premium charge
           console.log("TOTAL PRICE",total_price);
     
