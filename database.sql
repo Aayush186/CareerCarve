@@ -1,3 +1,4 @@
+-- Table to store student information
 CREATE TABLE `students` (
   `rollno` int NOT NULL,
   `name` varchar(50) DEFAULT NULL,
@@ -5,6 +6,7 @@ CREATE TABLE `students` (
   PRIMARY KEY (`rollno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Table to store mentor information
 CREATE TABLE `mentors` (
   `mentorId` int NOT NULL,
   `name` varchar(50) DEFAULT NULL,
@@ -12,6 +14,7 @@ CREATE TABLE `mentors` (
   PRIMARY KEY (`mentorId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Table to define different payment types and their prices
 CREATE TABLE `payment_types` (
   `payment_type_id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(50) DEFAULT NULL,
@@ -19,6 +22,7 @@ CREATE TABLE `payment_types` (
   PRIMARY KEY (`payment_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Table to store payment records for bookings
 CREATE TABLE `payments` (
   `id` int NOT NULL AUTO_INCREMENT,
   `booking_id` int DEFAULT NULL,
@@ -32,6 +36,7 @@ CREATE TABLE `payments` (
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Table to store booking details and link them with students and mentors
 CREATE TABLE `bookings` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rollno` int DEFAULT NULL,
@@ -49,6 +54,7 @@ CREATE TABLE `bookings` (
   CONSTRAINT `bookings_ibfk_3` FOREIGN KEY (`session_slot_id`) REFERENCES `session_slot` (`session_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Table to store session slot details linked with mentors
 CREATE TABLE `session_slot` (
   `session_id` int NOT NULL AUTO_INCREMENT,
   `mentorId` int DEFAULT NULL,
