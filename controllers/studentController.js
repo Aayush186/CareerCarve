@@ -3,7 +3,7 @@ const {db} = require("../config/database");
 //@desc Get all students
 //@route GET /api/students
 //@access public
-const getStudents = async (req, res) => {
+const getStudents = (req, res) => {
     const query = "SELECT * FROM students";
     db.query(query, (err, results) => {
         if (err) {

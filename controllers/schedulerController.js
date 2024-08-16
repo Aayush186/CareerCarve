@@ -20,7 +20,8 @@ const getMentorSession = (req, res) => {
     res.status(200).json(results);
   });
 };
-
+//allowing users to schedule a 1-on-1 session with a mentor
+//POST /api/scheduler
 const scheduleSession = (req, res) => {
   const { rollno, mentorId, duration, role, premium, session_slot } = req.body;
 
